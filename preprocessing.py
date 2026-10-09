@@ -44,15 +44,17 @@ def contrast_stretching(input_image: np.ndarray, a: float = None, b: float = Non
             plt.show()
     return stretched_image
 
-def thresholding(input_image: np.ndarray, threshold: float = None, show_transform: bool = False) -> np.ndarray:
+def thresholding(input_image: np.ndarray, threshold: float = None, show_transform: bool = False, use_cv2: bool = False) -> np.ndarray:
     '''
     if r < threshold, f(r) = 0
     elif r >= threshold, f(r) = 255
     '''
     if threshold is None:
         threshold = np.mean(input_image)
-
-    thresholded_image = contrast_stretching(input_image, a=threshold, b=threshold)
+    if use_cv2:
+        _, thresholded_image = cv2.threshold(input_image, threshold, 255, cv2.THRESH_BINARY)
+    else:
+        thresholded_image = contrast_stretching(input_image, a=threshold, b=threshold)
 
     if show_transform:
         # Plot the transformation function
@@ -273,11 +275,12 @@ def median_filter_t(input_image: np.ndarray, kernel_size: int = 5) -> np.ndarray
 
 def main():
     img = cv2.imread("Test_Image_2026.bmp", cv2.IMREAD_GRAYSCALE)
-    avg_image = average_filter(img, kernel_size=15, use_cv2=True)
-    median_image = median_filter(img, kernel_size=15, use_cv2=True)
-    median_t_image = median_filter_t(img, kernel_size=19)
-    avg_median_t_image = average_filter(img, kernel_size=5, use_cv2=True)
+    # avg_image = average_filter(img, kernel_size=15, use_cv2=True)
+    # median_image = median_filter(img, kernel_size=15, use_cv2=True)
+    # median_t_image = median_filter_t(img, kernel_size=19)
+    # avg_median_t_image = average_filter(img, kernel_size=5, use_cv2=True)
     
-    plot_img_hist([img, median_image, median_t_image, avg_median_t_image], title="Median Filtered Image and Histogram", labels=["Original","Median","Median T","Median T Average"])
+    # plot_img_hist([img, median_image, median_t_image, avg_median_t_image], title="Median Filtered Image and Histogram", labels=["Original","Median","Median T","Median T Average"])
+
 if __name__ == "__main__":
     main()

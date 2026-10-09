@@ -2,17 +2,22 @@ import cv2
 import numpy as np
 import matplotlib.pyplot as plt
 
-def plot_img_hist(images:list, title: str = "Image and Histogram", labels:list = None, block=True) -> None:
+def plot_img_hist(images, title: str = "Image and Histogram", labels:list = None, block=True) -> None:
 
-    if not isinstance(images, list):
-        raise ValueError("Input images as a list, e.g. [image]")
+    # if (not isinstance(images, list)) or (not isinstance(images,np.array)):
+    #     raise ValueError("Input images as a list or just one image, e.g. [image] or image")
     if not images:
         raise ValueError("images must not be empty")
     if labels is not None and len(labels) != len(images):
         raise ValueError("labels must have the same length as images")
 
+    if type(images) is np.array:
+        num_img = 1
+    elif type(images) is list:
+        num_img = len(images)
+    else: 
+        raise ValueError("Input images as a list or just one image, e.g. [image] or image")
 
-    num_img = len(images)
     _, axes = plt.subplots(num_img, 2, figsize=(15, 3 * num_img), squeeze=False)
 
     for i, img in enumerate (images):
