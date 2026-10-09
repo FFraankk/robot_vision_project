@@ -1,21 +1,36 @@
 import cv2
 import numpy as np
+import matplotlib.pyplot as plt
 
-def plot_img_hist(image: np.ndarray, title: str = "Image and Histogram") -> None:
-    import matplotlib.pyplot as plt
-    
-    _, axes = plt.subplots(1, 2, figsize=(12, 3))
-    
-    # Display the image
-    axes[0].imshow(image, cmap='gray')
-    axes[0].axis('off')
-    axes[0].set_title("Image")
-    
-    # Display the histogram
-    axes[1].hist(image.ravel(), bins=256, range=(0, 256), color="black")
-    axes[1].set_xlabel("Pixel intensity")
-    axes[1].set_ylabel("Pixel count")
-    axes[1].set_title("Intensity Histogram")
-    
+def plot_img_hist(images:list, title: str = "Image and Histogram", labels:list = None, block=True) -> None:
+
+    if not isinstance(images, list):
+        raise ValueError("Input images as a list, e.g. [image]")
+    if not images:
+        raise ValueError("images must not be empty")
+    if labels is not None and len(labels) != len(images):
+        raise ValueError("labels must have the same length as images")
+
+
+    num_img = len(images)
+    _, axes = plt.subplots(num_img, 2, figsize=(15, 3 * num_img), squeeze=False)
+
+    for i, img in enumerate (images):
+        # Display the image
+        axes[i,0].imshow(img, cmap='gray')
+        axes[i,0].axis('off')
+        if labels is None:
+            axes[i,0].set_title("Image")
+        else:
+            axes[i,0].set_title(f"{labels[i]}")
+
+        # Display the histogram
+        axes[i,1].hist(img.ravel(), bins=256, range=(0, 256), color="black")
+        axes[i,1].set_xlabel("Pixel intensity")
+        axes[i,1].set_ylabel("Pixel count")
+        if i==0:
+            axes[i,1].set_title("Intensity Histogram")
+        
     plt.suptitle(title)
-    plt.show()
+    plt.show(block=block)
+

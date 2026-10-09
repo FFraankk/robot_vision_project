@@ -171,54 +171,113 @@ def clahe_equalization(input_image: np.ndarray, clip_limit: float = 1.2, tile_gr
 
 # Filtering Functions
 
-def average_filter(input_image: np.ndarray, kernel_size: int = 5) -> np.ndarray:
-    # output_image = cv2.blur(input_image, (kernel_size, kernel_size), borderType=cv2.BORDER_CONSTANT)
-    if kernel_size%2 == 0:
+def average_filter(input_image: np.ndarray, kernel_size: int = 5, use_cv2:bool = False) -> np.ndarray:
+    '''Apply average filter on the input 2D greyscale image'''
+    # cv2 implementation
+    if use_cv2:
+        return cv2.blur(input_image, (kernel_size, kernel_size), borderType=cv2.BORDER_CONSTANT)
+    
+    if input_image.ndim != 2:
+        raise ValueError("input_image must be a 2D grayscale image")
+    if kernel_size%2 == 0 or kernel_size <= 0:
         print("Error. kernel_size should be positive odd integers")
         raise ValueError ("kernel_size should be odd number for simplicity")
     input_size = input_image.shape
 
     # Calculate padding
     padding = kernel_size // 2
-    padded_img = np.pad(input_image, padding, mode="constant", constant_values=0)
+    padded_img = np.pad(input_image, padding, mode="edge")
 
-    output_image = np.zeros_like(input_image)
+    output_image = np.empty(input_image.shape, dtype=np.float64)
+
+    # Iterate through pixels
+    for i in range(input_size[0]):
+        for j in range(input_size[1]):
+            # sliding window
+            window = padded_img[
+                i : i + kernel_size,
+                j : j + kernel_size
+            ]
+            output_image[i,j] = np.mean(window)
+    output_image = np.clip(np.rint(output_image), 0, 255).astype(np.uint8)
+
+    return output_image
+
+def median_filter(input_image: np.ndarray, kernel_size: int = 5, use_cv2:bool=False) -> np.ndarray:
+    '''Apply median filter on the input 2D greyscale image'''
+    ## cv2 implementation
+    if use_cv2:
+        return cv2.medianBlur(input_image, kernel_size)
+
+    if input_image.ndim != 2:
+        raise ValueError("input_image must be a 2D grayscale image")
+    if kernel_size%2 == 0 or kernel_size <= 0:
+        print("Error. kernel_size should be positive odd integers")
+        raise ValueError ("kernel_size should be odd number for simplicity")
+    input_size = input_image.shape
+
+    # Calculate padding
+    padding = kernel_size // 2
+    padded_img = np.pad(input_image, padding, mode="edge")
+
+    output_image = np.empty_like(input_image)
     
     # Iterate through pixels
     for i in range(input_size[0]):
         for j in range(input_size[1]):
-            temp_pixel_value = 0.0
-            
-            # Iterate through the kernel
-            for k in range (kernel_size):
-                for l in range (kernel_size):
-                    
-                    temp_pixel_value += np.float64(padded_img[i+k, j+l]) ## Sum value
-            output_image[i][j] = temp_pixel_value / np.square(kernel_size)
+            # sliding window
+            window = padded_img[
+                i : i + kernel_size,
+                j : j + kernel_size
+            ]
+            output_image[i,j] = np.median(window)
 
-    output_image = np.clip(np.rint(output_image), 0, 255).astype(np.uint8)
+    return output_image
 
+def median_filter_t(input_image: np.ndarray, kernel_size: int = 5) -> np.ndarray:
+    '''Apply median filter on the input 2D greyscale image
+    Kernel uses a t shape of length = kernel_size
+    e.g.{
+    [0,0,1,0,0],
+    [0,0,1,0,0],
+    [1,1,1,1,1],
+    [0,0,1,0,0],
+    [0,0,1,0,0],]'''
 
-            # # Define the region of interest (ROI) for the kernel
-            # i_min = max(i - kernel_size // 2, 0)
-            # i_max = min(i + kernel_size // 2 + 1, input_size[0])
-            # j_min = max(j - kernel_size // 2, 0)
-            # j_max = min(j + kernel_size // 2 + 1, input_size[1])
-            
-            # # Extract the ROI and compute the average
-            # roi = input_image[i_min:i_max, j_min:j_max]
-            # output_image[i, j] = np.mean(roi)
-    output_size = output_image.shape
-    print(f"Input image size: {input_size}, Output image size: {output_size}")
+    if input_image.ndim != 2:
+        raise ValueError("input_image must be a 2D grayscale image")
+    if kernel_size%2 == 0 or kernel_size <= 0:
+        print("Error. kernel_size should be positive odd integers")
+        raise ValueError ("kernel_size should be odd number for simplicity")
+    input_size = input_image.shape
 
+    # Calculate padding
+    padding = kernel_size // 2
+    padded_img = np.pad(input_image, padding, mode="edge")
+
+    output_image = np.empty_like(input_image)
+    
+    t_mask = np.zeros((kernel_size, kernel_size), dtype=bool)
+    t_mask[padding, :] = True
+    t_mask[:, padding] = True
+    # Iterate through pixels
+    for i in range(input_size[0]):
+        for j in range(input_size[1]):
+            # sliding window
+            window = padded_img[
+                i : i + kernel_size,
+                j : j + kernel_size
+            ]
+            output_image[i,j] = np.median(window[t_mask])
     return output_image
 
 def main():
     img = cv2.imread("Test_Image_2026.bmp", cv2.IMREAD_GRAYSCALE)
-    # plot_img_hist(img, title="Original Grayscale Image and Histogram")
-    # print(img.shape)
-    output_image = average_filter(img, kernel_size=5)
-    plot_img_hist(output_image, title="Average Filtered Image and Histogram")
-    # print(output_image)
+    avg_image = average_filter(img, kernel_size=15, use_cv2=True)
+    median_image = median_filter(img, kernel_size=15, use_cv2=True)
+    median_t_image = median_filter_t(img, kernel_size=19)
+    avg_median_t_image = average_filter(img, kernel_size=5, use_cv2=True)
+    
+    plot_img_hist([img, median_image, median_t_image, avg_median_t_image], title="Median Filtered Image and Histogram", labels=["Original","Median","Median T","Median T Average"])
 if __name__ == "__main__":
     main()
