@@ -1,0 +1,204 @@
+{
+  "name": "c100",
+  "reason": "Baseline second-character score favors 8 over D. Increase C while retaining the original HOG representation.",
+  "config": {
+    "mode": "pad",
+    "lr": 0.01,
+    "C": 100.0,
+    "epochs": 7
+  },
+  "validation_accuracy": 0.9793233082706767,
+  "history": [
+    {
+      "epoch": 1,
+      "loss": 167.23032915709447,
+      "validation_accuracy": 0.9577067669172933
+    },
+    {
+      "epoch": 2,
+      "loss": 52.57801767746793,
+      "validation_accuracy": 0.9642857142857143
+    },
+    {
+      "epoch": 3,
+      "loss": 45.64628061120348,
+      "validation_accuracy": 0.9680451127819549
+    },
+    {
+      "epoch": 4,
+      "loss": 43.10243004077491,
+      "validation_accuracy": 0.9708646616541353
+    },
+    {
+      "epoch": 5,
+      "loss": 41.51790568867668,
+      "validation_accuracy": 0.974624060150376
+    },
+    {
+      "epoch": 6,
+      "loss": 41.0741736597423,
+      "validation_accuracy": 0.9736842105263158
+    },
+    {
+      "epoch": 7,
+      "loss": 40.75133546387005,
+      "validation_accuracy": 0.9793233082706767
+    },
+    {
+      "epoch": 8,
+      "loss": 40.96919135422003,
+      "validation_accuracy": 0.9755639097744361
+    },
+    {
+      "epoch": 9,
+      "loss": 39.945064803755535,
+      "validation_accuracy": 0.974624060150376
+    },
+    {
+      "epoch": 10,
+      "loss": 40.28839771172481,
+      "validation_accuracy": 0.9736842105263158
+    },
+    {
+      "epoch": 11,
+      "loss": 40.11129071773913,
+      "validation_accuracy": 0.9774436090225563
+    },
+    {
+      "epoch": 12,
+      "loss": 39.8008883724168,
+      "validation_accuracy": 0.9727443609022557
+    },
+    {
+      "epoch": 13,
+      "loss": 39.57119658423252,
+      "validation_accuracy": 0.9755639097744361
+    },
+    {
+      "epoch": 14,
+      "loss": 39.78774967416946,
+      "validation_accuracy": 0.9755639097744361
+    },
+    {
+      "epoch": 15,
+      "loss": 39.50360781738853,
+      "validation_accuracy": 0.9765037593984962
+    },
+    {
+      "epoch": 16,
+      "loss": 39.541570780483845,
+      "validation_accuracy": 0.9718045112781954
+    },
+    {
+      "epoch": 17,
+      "loss": 39.75562589765991,
+      "validation_accuracy": 0.9708646616541353
+    },
+    {
+      "epoch": 18,
+      "loss": 39.82568017749652,
+      "validation_accuracy": 0.9774436090225563
+    },
+    {
+      "epoch": 19,
+      "loss": 39.73414154410083,
+      "validation_accuracy": 0.9755639097744361
+    },
+    {
+      "epoch": 20,
+      "loss": 39.42377642736502,
+      "validation_accuracy": 0.9718045112781954
+    },
+    {
+      "epoch": 21,
+      "loss": 40.17223237191765,
+      "validation_accuracy": 0.9755639097744361
+    },
+    {
+      "epoch": 22,
+      "loss": 39.48406652946383,
+      "validation_accuracy": 0.9765037593984962
+    },
+    {
+      "epoch": 23,
+      "loss": 39.7529974479586,
+      "validation_accuracy": 0.9774436090225563
+    },
+    {
+      "epoch": 24,
+      "loss": 39.55496260310225,
+      "validation_accuracy": 0.9755639097744361
+    },
+    {
+      "epoch": 25,
+      "loss": 39.50776869351746,
+      "validation_accuracy": 0.9736842105263158
+    },
+    {
+      "epoch": 26,
+      "loss": 39.75738762312807,
+      "validation_accuracy": 0.9765037593984962
+    },
+    {
+      "epoch": 27,
+      "loss": 39.63500835767116,
+      "validation_accuracy": 0.9727443609022557
+    },
+    {
+      "epoch": 28,
+      "loss": 39.46752098494447,
+      "validation_accuracy": 0.9699248120300752
+    },
+    {
+      "epoch": 29,
+      "loss": 39.328062446111815,
+      "validation_accuracy": 0.9755639097744361
+    },
+    {
+      "epoch": 30,
+      "loss": 39.447356748915944,
+      "validation_accuracy": 0.9765037593984962
+    },
+    {
+      "epoch": 31,
+      "loss": 39.302876489000525,
+      "validation_accuracy": 0.9689849624060151
+    },
+    {
+      "epoch": 32,
+      "loss": 39.371720750437966,
+      "validation_accuracy": 0.9736842105263158
+    },
+    {
+      "epoch": 33,
+      "loss": 39.14714946702158,
+      "validation_accuracy": 0.9755639097744361
+    },
+    {
+      "epoch": 34,
+      "loss": 39.58215673299249,
+      "validation_accuracy": 0.9736842105263158
+    },
+    {
+      "epoch": 35,
+      "loss": 39.53135647382893,
+      "validation_accuracy": 0.974624060150376
+    }
+  ],
+  "search_fit_seconds": 0.6080459369986784,
+  "refit_seconds": 0.1412159130013606,
+  "test_evaluated": false,
+  "chip_predictions": {
+    "4": {
+      "prediction": "H844780A00",
+      "preprocessing": "pad",
+      "position_accuracy": 0.9
+    },
+    "8": {
+      "prediction": "H844780A00",
+      "preprocessing": "pad",
+      "position_accuracy": 0.9
+    }
+  },
+  "selection_note": "The chip image participates in refinement feedback. Its score is a development result."
+}
